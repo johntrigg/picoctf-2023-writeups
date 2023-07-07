@@ -5,23 +5,23 @@ picoCTF{fake_flag}
 
 # Cryptography
 
-## ReadMyCert
+## picoCTF ReadMyCert
 
 We download and run file, and find that it is a PEM certificate request file. We cat it, and it looks encoded. We google "Pem Certficate Request Cipher Decoder", and get to the following link.
 
 https://certlogik.com/decoder/
 
-## Rotation
+## picoCTF Rotation
 
 We download and cat the file. It is very obviously an encrypted flag, and the first 7 letters are 'picoCTF'. We plug it into cyberchef, and cyberchef doesn't automatically decode it. We give cyberchef the "rot13" option, and play around with the offset. We find that rot13 with a -8 offset decrypts the flag.
 
-## HideToSee
+## picoCTF HideToSee
 
 ```stegseek atbash.jpg /usr/share/wordlists/rockyou.txt```
 
 This one was tricky. Had to go through a lot of tools, and eventually stegseek worked. It's a very interesting tool - it went through all of rockyou.txt in a few seconds. Stegseek gave us the output of some sort of encrypted text. Based on the challenge name, it's an atbash cipher. Decod.fr has an atbash decoder to help us.
 
-## SRA
+## picoCTF SRA
 
 This is a RSA challenge we netcat into. It gives us some parameters with names that correspond to sins, and expects a third. It can be inferred it is testing our knowledge of RSA. We are given a source code, and we can enumerate what variables correspond to what.
 
@@ -71,19 +71,19 @@ This gives us the plaintext, which we enter into the nc connection, and we will 
 
 # Web Exploitation
 
-## FindMe
+## picoCTF FindMe
 
 curl -vL -d 'username=test&password=test!' URL
 
 Burpsuite capture the response to the login
 
-## More SQLi
+## picoCTF More SQLi
 
 The challenge name tells us one thing: this will be related to SQL injection. We start the instance, and because it's a web exploitation challenge, we open up Burpsuite. We are greeted with a login page.
 
 We activate Burpsuite intercept and its proxy. We send a sample login request and capture the request. Burpsuite provides a handy "intruder" feature, which allows us to send payloads in a specific part of a request. We send the request to intruder, clear the auto-detected payloads, and tell Burpsuite that the test for "username" is our payload. We switch over to the "payload" section, and we want to pick a wordlist of potential payloads. I used /usr/share/seclists/SQLi/quick-SQLi.txt
 
-## Match Regex
+## picoCTF Match Regex
 
 We are given a website. The first thing we should do is check the website's source code. Inside, we find an interesting JavaScript code snippet. 
 
@@ -120,7 +120,7 @@ We can use the website to analyze the phrase - which looks like this
 
 Therefore a matching phrase would be ```p12345F!?```. Submitting this returns us the flag.
 
-## SOAP
+## picoCTF SOAP
 
 At the top of the challenge, we already have a hint in the name: XXE (external entity injection), and the name is SOAP. We do some googling, and the angle here is definitely an XML XXE attack.
 
@@ -152,11 +152,11 @@ We modified the POST request that we captured in two ways: we defined an XXE obj
 
 # Forensics
 
-## Who Is It
+## picoCTF Who Is It
 
 Look at the IP addresses, and run whois on the sender IP address. This will get you their identity.
 
-## Hideme
+## picoCTF Hideme
 
 It's a steg challenge, which usually involves using the correct tool.
 
@@ -164,11 +164,11 @@ It's a steg challenge, which usually involves using the correct tool.
 
 Foremost is a tool that works with png files. It reveals to us some some secret hidden information, namely a zip file. We unzip the file, and are greeted with the flag.
 
-## PCAP Poison
+## picoCTF PCAP Poison
 
 Search packet bytes for picoCTF, and the flag will pop up.
 
-## Find and Open
+## picoCTF Find and Open
 
 We are given a PCAP file and a zip file. When we run strings on the PCAP file, we get what appears to be a base64 encoded string (it ends with an = sign, and consists of only numbers and letters). 
 
@@ -304,15 +304,15 @@ We are told to ssh into an instance, with a binary that will read a text file as
 
 # Reverse Engineering
 
-## Safe Opener 2
+## picoCTF Safe Opener 2
 
 We are given a .class file. It is a compiled Java file. We plug it into an online Java decompiler, and get the flag.
 
-## Reverse
+## picoCTF Reverse
 
 Run strings on it, grep for 'pico' and it pops right up.
 
-## Timer
+## picoCTF Timer
 
 This one was a little tricky for me. I eventually end up using apktool on it 
 
@@ -324,13 +324,13 @@ This creates a directory with information on the apk. I enter the directory, and
 
 Yields the flag.
 
-# Ready Gladiator 0
+# picoCTF Ready Gladiator 0
 
 This marks a series of three challenges based on the game "core wars". In core wars, you think of the game as two programs "fighting" each other.
 
 The goal here is to make a warrior that always loses. To do this, we simply change the "1" in the imp.red program they give us, to a 0. This causes the other program to "win" in the context of core wars rules. Why? Because of the way the imp works - it is moving and copying itself. Our program isn't.
 
-# Ready Gladiator 1
+# picoCTF Ready Gladiator 1
 
 Now, we need to actually make something that wins. If you do some research onto "core wars", you get into a rabbit hole. It's an interesting strategy game, with a lot of depth. More importantly, there's a lot of dicussion on it. The "imp.red" we are given is actually a classical warrior in the context of the game. As such, there is documentation on beating it.
 
@@ -353,7 +353,7 @@ end
 
 This "dwarf" will defeat the other program, the "imp", and yield us the victory, and the flag. 
 
-# Ready Gladiator 2
+# picoCTF Ready Gladiator 2
 
 This is the third and final Core Wars challenge. It's the same concept as the above two, but this time, we need to create an undeafable program, that will win every single battle against the imp - 100 times.
 
